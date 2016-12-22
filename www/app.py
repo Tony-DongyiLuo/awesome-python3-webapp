@@ -1,6 +1,8 @@
 #!usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+__author__ = 'Tony Luo'
+
 import asyncio, os, json, time
 import logging
 logging.basicConfig(level=logging.INFO)
