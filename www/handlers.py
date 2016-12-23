@@ -46,7 +46,6 @@ def text2html(text):
     lines = map(lambda s: '<p>%s</p>' % s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'), filter(lambda s: s.strip() != '', text.split('\n')))
     return ''.join(lines)
 
-@asyncio.coroutine
 async def cookie2user(cookie_str):
     '''
     Parse cookie and load user if cookie is valid.
