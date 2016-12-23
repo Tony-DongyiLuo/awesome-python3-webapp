@@ -17,7 +17,7 @@ from jinja2 import Environment, FileSystemLoader
 import www.orm as orm
 from www.coroweb import add_routes, add_static
 
-COOKIE_NAME = 'awesession'
+from www.handlers import cookie2user, COOKIE_NAME
 
 def init_jinja2(app, **kw):
     logging.info('init jinja2...')
