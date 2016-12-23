@@ -17,6 +17,7 @@ from jinja2 import Environment, FileSystemLoader
 import www.orm as orm
 from www.coroweb import add_routes, add_static
 
+COOKIE_NAME = 'awesession'
 
 def init_jinja2(app, **kw):
     logging.info('init jinja2...')
@@ -127,7 +128,7 @@ def datetime_filter(t):
 async def init(loop):
     await orm.create_pool(loop=loop, host='127.0.0.1', port=3306, user='root', password='password', db='awesome')
     app = web.Application(loop=loop, middlewares=[
-        logger_factory, auth_factory,response_factory
+        logger_factory, auth_factory, response_factory
     ])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     add_routes(app, 'handlers')
