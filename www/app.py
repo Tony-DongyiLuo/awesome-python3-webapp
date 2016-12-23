@@ -14,6 +14,8 @@ from datetime import datetime
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
 
+from www.config import configs
+
 import www.orm as orm
 from www.coroweb import add_routes, add_static
 
@@ -43,7 +45,7 @@ def init_jinja2(app, **kw):
 async def logger_factory(app, handler):
     async def logger(request):
         logging.info('Request: %s %s' % (request.method, request.path))
-        # await asyncio.sleep(0.3)
+        # yield from asyncio.sleep(0.3)
         return (await handler(request))
     return logger
 
@@ -97,11 +99,12 @@ async def response_factory(app, handler):
                 resp.content_type = 'application/json;charset=utf-8'
                 return resp
             else:
+                r['__user__'] = request.__user__
                 resp = web.Response(body=app['__templating__'].get_template(template).render(**r).encode('utf-8'))
                 resp.content_type = 'text/html;charset=utf-8'
                 return resp
-        if isinstance(r, int) and r >= 100 and r < 600:
-            return web.Response(r)
+        if isinstance(r, int) and t >= 100 and t < 600:
+            return web.Response(t)
         if isinstance(r, tuple) and len(r) == 2:
             t, m = r
             if isinstance(t, int) and t >= 100 and t < 600:
@@ -126,7 +129,7 @@ def datetime_filter(t):
     return u'%s年%s月%s日' % (dt.year, dt.month, dt.day)
 
 async def init(loop):
-    await orm.create_pool(loop=loop, host='127.0.0.1', port=3306, user='root', password='password', db='awesome')
+    await orm.create_pool(loop=loop, **configs.db)
     app = web.Application(loop=loop, middlewares=[
         logger_factory, auth_factory, response_factory
     ])
