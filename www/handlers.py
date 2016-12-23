@@ -198,9 +198,3 @@ async def api_create_blog(request, *, name, summary, content):
     await blog.save()
     return blog
 
-@get('/api/users')
-async def api_get_users():
-    users = await User.findAll(orderBy='created_at desc')
-    for u in users:
-        u.passwd = 'password'
-    return dict(users=users)
