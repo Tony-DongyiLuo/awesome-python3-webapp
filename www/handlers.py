@@ -67,7 +67,7 @@ async def cookie2user(cookie_str):
         if sha1 != hashlib.sha1(s.encode('utf-8')).hexdigest():
             logging.info('invalid sha1')
             return None
-        user.passwd = 'password'
+        user.passwd = '******'
         return user
     except Exception as e:
         logging.exception(e)
