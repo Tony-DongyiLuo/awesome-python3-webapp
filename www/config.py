@@ -43,10 +43,11 @@ def toDict(d):
 
 configs = config_default.configs
 
+'''
 try:
     import www.config_override as config_override
     configs = merge(configs, config_override.configs)
 except ImportError:
     pass
-
+'''
 configs = toDict(configs)
